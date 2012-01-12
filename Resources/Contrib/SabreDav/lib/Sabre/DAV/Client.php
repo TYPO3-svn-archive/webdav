@@ -10,7 +10,7 @@
  * 
  * @package Sabre
  * @subpackage DAVClient
- * @copyright Copyright (C) 2007-2011 Rooftop Solutions. All rights reserved.
+ * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
  * @author Evert Pot (http://www.rooftopsolutions.nl/) 
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
@@ -238,6 +238,7 @@ class Sabre_DAV_Client {
      * @return array 
      */
     public function request($method, $url = '', $body = null, $headers = array()) {
+
         $url = $this->getAbsoluteUrl($url);
 
         $curlSettings = array(
