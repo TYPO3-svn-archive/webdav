@@ -1,5 +1,7 @@
 <?php
 
+die();
+
 /**
  * Documentation can be found here:
  * http://code.google.com/p/sabredav/wiki/WebDAVClient

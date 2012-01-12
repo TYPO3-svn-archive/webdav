@@ -4,4 +4,5 @@ emMakeHeader =
 addCyberbuckInFileList = 1
 # cat=basic/settings; type=boolean; label = add webdav shortcut in Filelist
 addWebdavInFileList = 1
-
+# cat=basic/settings; type=string; label = dav only hostname
+davOnlyHostname =

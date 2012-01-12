@@ -17,8 +17,18 @@ class tx_Webdav_Controller_WebdavController {
 	private $objectTree;
 
 	function main() {
+		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['webdav']);
 		if(substr($_SERVER["PATH_INFO"],0,4) === '/dav') {
 			$this->baseUri = $_SERVER["SCRIPT_NAME"] . '/dav';
+			$this->initBeUser();
+			$this->initDav();
+			if($this->authenticate()) {
+				$this->buildVFS();
+				$this->handleRequest();
+			}
+			die();
+		} elseif($_SERVER['SERVER_NAME'] === $extConfig['davOnlyHostname']) {
+			$this->baseUri = dirname($_SERVER["SCRIPT_NAME"]);
 			$this->initBeUser();
 			$this->initDav();
 			if($this->authenticate()) {
