@@ -1,6 +1,5 @@
 <?php
 class tx_webdav_pagerendererHook {
-
 	function render(&$params) {
 		if(strpos(t3lib_div::getIndpEnv('SCRIPT_NAME'), 'file_list.php')) {
 			$buffer = '';

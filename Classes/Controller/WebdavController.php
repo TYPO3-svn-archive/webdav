@@ -95,7 +95,7 @@ class tx_Webdav_Controller_WebdavController {
 		$result = $this->auth->getUserPass();
 		$BE_USER->setBeUserByName($result[0]);
 
-		if (!$result || md5($result[1])!=$BE_USER->user['password']) {
+		if (!$result || !$this->checkUserCredentials($BE_USER->user, $result[1])) {
 			$this->auth->setRealm('WebDav for TYPO3');
 			$this->auth->requireLogin();
 
@@ -118,6 +118,26 @@ class tx_Webdav_Controller_WebdavController {
 		} else {
 			return true;
 		}
+	}
+	/**
+	 * Check password of user with a given one
+	 *
+	 * Thanks to Georg Ringer (typo3.dev mailinglist 15.02.2012)
+	 *
+	 * @param array $userRecord
+	 * @param string $password
+	 * @return boolean
+	 */
+	private function checkUserCredentials(array $userRecord, $password) {
+		t3lib_div::requireOnce(t3lib_extMgm::extPath('saltedpasswords', 'classes/salts/class.tx_saltedpasswords_salts_factory.php'));
+		$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance($userRecord['password'], 'BE');
+		if (!is_object($this->objInstanceSaltedPW)) {
+			$isValid = md5($password) == $userRecord['password'];
+			return $isValid;
+		}
+		$validPassword = $this->objInstanceSaltedPW->checkPassword($password,
+		$userRecord['password']);
+		return $validPassword;
 	}
 	function buildVFS() {
 		global $BE_USER, $TYPO3_CONF_VARS, $TYPO3_DB;
