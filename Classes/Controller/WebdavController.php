@@ -129,15 +129,14 @@ class tx_Webdav_Controller_WebdavController {
 	 * @return boolean
 	 */
 	private function checkUserCredentials(array $userRecord, $password) {
-		t3lib_div::requireOnce(t3lib_extMgm::extPath('saltedpasswords', 'classes/salts/class.tx_saltedpasswords_salts_factory.php'));
-		$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance($userRecord['password'], 'BE');
-		if (!is_object($this->objInstanceSaltedPW)) {
-			$isValid = md5($password) == $userRecord['password'];
-			return $isValid;
+		if(t3lib_extMgm::isLoaded('saltedpasswords', false)) {
+			t3lib_div::requireOnce(t3lib_extMgm::extPath('saltedpasswords', 'classes/salts/class.tx_saltedpasswords_salts_factory.php'));
+			$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance($userRecord['password'], 'BE');
+			if (is_object($this->objInstanceSaltedPW)) {
+				return $this->objInstanceSaltedPW->checkPassword($password, $userRecord['password']);
+			}
 		}
-		$validPassword = $this->objInstanceSaltedPW->checkPassword($password,
-		$userRecord['password']);
-		return $validPassword;
+		return md5($password) == $userRecord['password'];
 	}
 	function buildVFS() {
 		global $BE_USER, $TYPO3_CONF_VARS, $TYPO3_DB;
