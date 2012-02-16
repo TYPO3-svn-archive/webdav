@@ -93,7 +93,7 @@ class tx_Webdav_Controller_WebdavController {
 	function authenticate() {
 		global $BE_USER;
 		$this->auth = new Sabre_HTTP_BasicAuth();
-		$result = $this->auth->getUserPass();
+		$result     = $this->auth->getUserPass();
 		$BE_USER->setBeUserByName($result[0]);
 
 		if (!$result || !$this->checkUserCredentials($BE_USER->user, $result[1])) {
@@ -101,7 +101,7 @@ class tx_Webdav_Controller_WebdavController {
 			$this->auth->requireLogin();
 
 				// Render template with fluid
-			$base            = dirname(dirname($this->baseUri)) == '/' ? '/' : dirname(dirname($this->baseUri)) . '/';
+			$base      = dirname(dirname($this->baseUri)) == '/' ? '/' : dirname(dirname($this->baseUri)) . '/';
 			$extRoot   = $base . t3lib_extMgm::siteRelPath('webdav');
 			$typo3root = $base . 'typo3/';
 			$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
