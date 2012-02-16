@@ -43,6 +43,7 @@ class tx_Webdav_Controller_WebdavController {
 		}
 	}
 	function sendCyberduckBookmark() {
+		global $BE_USER;
 		header('Content-Type:application/octet-stream');
 		header('Content-Disposition: attachment;filename="cyber.duck"');
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -58,7 +59,7 @@ class tx_Webdav_Controller_WebdavController {
 			<key>Port</key>
 			<string>80</string>
 			<key>Username</key>
-			<string>' . 'admin' . '</string>
+			<string>' . $BE_USER->user['username'] . '</string>
 			<key>Path</key>
 			<string>' . dirname(t3lib_div::getIndpEnv('REQUEST_URI')) .'/dav/</string>
 			<key>Access Timestamp</key>
