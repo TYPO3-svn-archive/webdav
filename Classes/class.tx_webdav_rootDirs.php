@@ -18,4 +18,8 @@ class tx_webdav_rootDirs extends Sabre_DAV_FS_Directory {
 		$name = str_replace('*',  ' ', $name);
 		$this->alias = $name;
 	}
+
+	public function delete() {
+		return false;
+	}
 }

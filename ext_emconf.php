@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "webdav".
 #
-# Auto generated 16-02-2012 16:39
+# Auto generated 03-05-2012 13:32
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => '',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '1.0.2',
+	'version' => '1.0.3',
 	'dependencies' => 'fluid,extbase',
 	'conflicts' => '',
 	'priority' => '',
