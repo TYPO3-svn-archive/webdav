@@ -17,6 +17,7 @@ class tx_Webdav_Controller_WebdavController {
 	private $objectTree;
 
 	function main() {
+
 		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['webdav']);
 		if(substr($_SERVER["PATH_INFO"],0,4) === '/dav') {
 			$this->baseUri = $_SERVER["SCRIPT_NAME"] . '/dav';
@@ -147,11 +148,13 @@ class tx_Webdav_Controller_WebdavController {
 	//--------------------------------------------------------------------------
 	// create virtual directories for the filemounts in typo3
 		$mounts     = array();
+		$mountArray = array();
 		foreach($fileMounts as $fileMount) {
-			#$mounts[] = $m = new ks_sabredav_rootDirs($fileMount['path']);
-			#$m->setName($fileMount['name'].'---'.htmlspecialchars($fileMount['path']));
-			$mounts[] = $m = new Sabre_DAV_FS_Directory($fileMount['path']);
+			$mountArray[] = $m = new tx_webdav_rootDirs($fileMount['path']);;
+			$m->setName($fileMount['name']);
 		}
+		$mounts   = $mountArray; //@todo remove later on, this is just for compatibility and use the next line instead
+		#$mounts[] = new Sabre_DAV_SimpleCollection('T3 - Mounts',$mountArray);
 		//----------------------------------------------------------------------
 		// add special folders for admins
 		if($BE_USER->isAdmin()) {
@@ -205,7 +208,7 @@ class tx_Webdav_Controller_WebdavController {
 				}
 				unset($userDirArray);
 				if(count($userDirs)>0) {
-					$mounts[] = $m = new Sabre_DAV_SimpleCollection('T3 - userHomePath',$userDirs);
+					$mounts[] = $m = new Sabre_DAV_SimpleCollection('T3 - HomePathForUser',$userDirs);
 				}
 			}
 
@@ -228,7 +231,7 @@ class tx_Webdav_Controller_WebdavController {
 				}
 				unset($groupDirArray);
 				if(count($groupDirs)>0) {
-					$mounts[] = $m = new Sabre_DAV_SimpleCollection('T3 - groupHomePath',$groupDirs);
+					$mounts[] = $m = new Sabre_DAV_SimpleCollection('T3 - HomePathForGroup',$groupDirs);
 				}
 
 			}
